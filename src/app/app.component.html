@@ -1,0 +1,177 @@
+<div class="container">
+  <div class="card bg-dark text-white mt-3 m-3">
+
+
+    <!-- header part  displaying Angular SignUp form content -->
+    <h5 class="card-header text-center">
+      <img src="../assets/lco.png" alt="" width="30" height="30" class="mr-2" />
+      Angular Signup Form
+    </h5>
+
+
+
+    <div class="card-body">
+      <!-- formGroup is neccessary for building reactive form group -->
+      <form [formGroup]="registerForm" 
+        (ngSubmit)="onSubmit()">
+        <div class="row">
+
+
+          <div class="form-group col-6">
+            <label>First Name</label>
+
+            <!-- here firstName is enclosed between 2 divs bcz only one *ngIf can be 
+            present in a single div, for checking two conditions may be use && operator
+
+             here formcontrolName means what variable holds the firstName should be 
+             same as one given in app.component.ts  .. by changing or entering the value
+             , the value is being modifed in the firstName in the registerForm.value
+
+
+
+             here [ngClass]  using property binding
+             "in-valid"  is a bootstrap class which kicks in red color when given 
+             firstName  gives an error
+             submitted -> checking for the submission  of form 
+             h['firstName'].errors-> checking for errors in  the firstName. 
+
+
+             
+            2.  -->
+            <input 
+             
+            type="text" class="form-control" 
+            formControlName="firstName"
+            [ngClass]="{'is-invalid':submitted && h['firstName'].errors}"/>
+
+              <!-- this ngIF shouldbe kicked in only when submittd and if there are any presence
+              of errors -->
+            <div *ngIf="submitted && h['firstName'].errors" class="text-warning">
+              <!-- inside div get kicked if there are erros and they are related to required -->
+              <div *ngIf="h['firstName'].errors?.['required']">
+                First Name is required
+              </div>
+
+            </div>
+          </div>
+
+
+
+          <div class="form-group col-6">
+            <label>Last Name</label>
+            <input type="text" class="form-control"
+            
+            formControlName="lastName"
+            [ngClass]="{'is-invalid':submitted && h['lastName'].errors}"/>
+
+            <div  *ngIf="submitted && h['lastName'].errors"
+             class="text-warning">
+              <div  *ngIf="h['lastName'].errors?.['required']">
+                Last Name is required
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+
+
+         <div class="form-group w-50">
+
+
+          <label>Email</label>
+          <input type="text" class="form-control"
+          formControlName="email"
+          [ngClass]="{'is-invalid':submitted && h['email'].errors}"
+             />
+          <div  class="text-warning"  
+          *ngIf="h['email'].invalid && (h['email'].dirty || h['email'].touched)">
+            <div  *ngIf="h['email'].errors?.['required']">Email is required</div>
+            <div *ngIf="h['email'].errors?.['email']">
+              Email must be a valid email address
+            </div>
+          </div>
+        </div>
+          <!-- here ngcontainer is given just to show that instead of with div 
+          the  *ngIF can also be added into the ng-container -->
+        <ng-container 
+        *ngIf="h['email'].invalid && (h['email'].dirty || h['email'].touched)" >
+          <div 
+          *ngIf="h['email'].errors?.['required']"
+           class="text-danger">
+            Value is required.
+          </div>
+        </ng-container>
+
+
+        <div class="row">
+          <div class="form-group col">
+            <label>Password</label>
+            <input type="password" class="form-control"
+            formControlName="password"
+            [ngClass]="{'is-invalid':submitted && h['password'].errors}"
+             />
+
+            <div *ngIf="h['password'].invalid && (h['password'].dirty || h['password'].touched)"
+             class="text-warning">
+              <div *ngIf="h['password'].errors?.['required']">Password is required</div>
+              <div *ngIf="h['password'].errors?.['minlength']">
+                Password must be at least 6 characters
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="form-group col">
+            <label>Confirm Password</label>
+            <input type="password" class="form-control"
+            
+            formControlName="confirmPassword"
+            [ngClass]="{'is-invalid':submitted && h['confirmPassword'].errors}"
+            />
+
+            <div 
+            *ngIf="h['confirmPassword'].invalid && (h['confirmPassword'].dirty || h['confirmPassword'].touched)"
+             class="text-warning">
+              <div *ngIf="h['confirmPassword'].errors?.['required']">
+                Confirm Password is required
+              </div>
+
+              <div *ngIf="h['confirmPassword'].errors?.['mustMatch']">
+                Passwords must match
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group form-check">
+          <input type="checkbox" id="acceptTerms" class="form-check-input"
+          formControlName="acceptTandC"
+          [ngClass]="{'is-invalid':submitted && h['acceptTandC'].errors}"
+            />
+          <label for="acceptTerms" class="form-check-label"
+            >Accept Terms & Conditions</label
+          >
+          <div class="text-warning">
+            Accept Ts & Cs is required
+          </div>
+        </div> 
+        <div class="text-center">
+          <button class="btn btn-success btn-lg px-4 mr-3">Register</button>
+          <button (click)="onReset()" class="btn btn-warning" type="reset">
+            Reset
+          </button>
+
+           <!-- both value and valid are json values so transforming into json   -->
+          <p class="text white">Value: {{ registerForm.value | json }}</p>
+          <p class="text white">Value: {{ registerForm.valid | json }}</p>
+        </div>
+      </form>  
+    </div>
+  </div>
+</div>
